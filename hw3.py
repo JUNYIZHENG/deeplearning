@@ -3,7 +3,7 @@ import torch.utils.data
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-
+##
 num_epochs = 100
 LR = 0.001
 scheduler_step_size = 20
