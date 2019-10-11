@@ -5,7 +5,7 @@
 #PBS -e $PBS_JOBNAME.$PBS_JOBID.err
 #PBS -o $PBS_JOBNAME.$PBS_JOBID.out
 #PBS -M junyiz4@illinois.edu
-cd ~/scratch/tinyimage/src/
+cd /u/training/tra216
 . /opt/modules/default/init/bash
 module load bwpy
 module load cudatoolkit
