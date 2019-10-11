@@ -110,16 +110,26 @@ transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.R
                                       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 transform_val = transforms.Compose([transforms.ToTensor()])
 
-# load tinyimage dataset
-train_dir = '/u/training/tra216/scratch/tiny-imagenet-200/train'
+train_dir = '/u/training/tra216/junyi/tiny-imagenet-200/train'
 train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100,shuffle=True, num_workers=8)
-# Your own directory to the validation folder of tiyimagenet
-val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images'
-if 'val_' in os.listdir(val_dir)[0]:
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=8)
+
+val_dir = '/u/training/tra216/junyi/tiny-imagenet-200/val/'
+if 'val_' in os.listdir(val_dir + 'images/')[0]:
     create_val_folder(val_dir)
+    val_dir = val_dir + 'images/'
 else:
-    pass
+    val_dir = val_dir + 'images/'
+# load tinyimage dataset
+# train_dir = '/u/training/tra216/scratch/tiny-imagenet-200/train/'
+# train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
+# train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100,shuffle=True, num_workers=8)
+# # Your own directory to the validation folder of tiyimagenet
+# val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images/'
+# if 'val_' in os.listdir(val_dir)[0]:
+#     create_val_folder(val_dir)
+# else:
+#     pass
 val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100,shuffle=False, num_workers=8)
 
