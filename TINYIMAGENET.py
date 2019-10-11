@@ -110,11 +110,11 @@ transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.R
                                       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 transform_val = transforms.Compose([transforms.ToTensor()])
 
-train_dir = '/u/training/tra216/junyi/tiny-imagenet-200/train'
+train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train/'
 train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=8)
 
-val_dir = '/u/training/tra216/junyi/tiny-imagenet-200/val/'
+val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/'
 if 'val_' in os.listdir(val_dir + 'images/')[0]:
     create_val_folder(val_dir)
     val_dir = val_dir + 'images/'
