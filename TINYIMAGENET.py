@@ -111,7 +111,7 @@ transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.R
 transform_val = transforms.Compose([transforms.ToTensor()])
 
 train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train/'
-train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
+train_dataset = datasets.ImageFolder(os.path.join(train_dir), transform=transform_train)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=8)
 
 val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/'
