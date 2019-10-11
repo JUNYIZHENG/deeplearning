@@ -9,4 +9,4 @@ cd ~/scratch/tinyimage/src/
 . /opt/modules/default/init/bash
 module load bwpy
 module load cudatoolkit
-aprun -n 1 -N 1 python main.py
+aprun -n 1 -N 1 python TINYIMAGENET.py
