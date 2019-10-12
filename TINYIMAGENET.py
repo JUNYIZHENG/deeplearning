@@ -7,6 +7,7 @@ import time
 import pandas as pd
 import torchvision.datasets as datasets
 import os
+from torch.autograd import Variable
 
 def conv3x3(in_channels, out_channels, stride=1):
     return nn.Conv2d(in_channels, out_channels, kernel_size=3,
@@ -110,30 +111,40 @@ transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.R
                                       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 transform_val = transforms.Compose([transforms.ToTensor()])
 
-train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train/'
-train_dataset = datasets.ImageFolder(os.path.join(train_dir), transform=transform_train)
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=8)
-
-val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/'
-if 'val_' in os.listdir(val_dir + 'images/')[0]:
+train_dir = '/u/training/tra216/scratch/tiny-imagenet-200/train'
+train_dataset = datasets.ImageFolder(train_dir,
+         transform=transform_train)
+#print(train_dataset.class_to_idx)
+train_loader = torch.utils.data.DataLoader(train_dataset,
+        batch_size=100, shuffle=True, num_workers=8)
+val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images'
+if 'val_' in os.listdir(val_dir)[0]:
     create_val_folder(val_dir)
-    val_dir = val_dir + 'images/'
 else:
-    val_dir = val_dir + 'images/'
-# load tinyimage dataset
-# train_dir = '/u/training/tra216/scratch/tiny-imagenet-200/train/'
-# train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
-# train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100,shuffle=True, num_workers=8)
-# # Your own directory to the validation folder of tiyimagenet
-# val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images/'
-# if 'val_' in os.listdir(val_dir)[0]:
-#     create_val_folder(val_dir)
-# else:
-#     pass
-val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100,shuffle=False, num_workers=8)
-
+    pass
+val_dataset = datasets.ImageFolder(val_dir,
+        transform=transforms.ToTensor())
+#print(val_dataset.class_to_idx)
+val_loader = torch.utils.data.DataLoader(val_dataset,
+        batch_size=100, shuffle=False, num_workers=8)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+#
+# train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train/'
+# train_dataset = datasets.ImageFolder(train_dir, transform=transform_train)
+# train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=8)
+#
+# val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/'
+# if 'val_' in os.listdir(val_dir + 'images/')[0]:
+#     create_val_folder(val_dir)
+#     val_dir = val_dir + 'images/'
+# else:
+#     val_dir = val_dir + 'images/'
+
+# val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
+# val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100,shuffle=False, num_workers=8)
+
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model = ResNet(BasicBlock,[2,4,4,2]).to(device)
 criterion = nn.CrossEntropyLoss()
@@ -145,9 +156,12 @@ for epoch in range(1, epochs + 1):
     print('epoch' + str(epoch))
     model.train()
 
-    for i, dataset in enumerate(train_loader):
-        images = dataset[0].to(device)
-        labels = dataset[1].to(device)
+    # for i, dataset in enumerate(train_loader):
+    #     images = dataset[0].to(device)
+    #     labels = dataset[1].to(device)
+    for images, labels in train_loader:
+        images = Variable(images).to(device)
+        labels = Variable(labels).to(device)
         optimizer.zero_grad()
         outputs = model(images)
         loss = criterion(outputs, labels)
@@ -158,9 +172,12 @@ for epoch in range(1, epochs + 1):
     total = 0
     model.eval()
     with torch.no_grad():
-        for dataset in val_loader:
-            images = dataset[0].to(device)
-            labels = dataset[1].to(device)
+        # for dataset in val_loader:
+        #     images = dataset[0].to(device)
+        #     labels = dataset[1].to(device)
+        for images, labels in val_loader:
+            images = Variable(images).to(device)
+            labels = Variable(labels).to(device)
             outputs = model(images)
             loss = criterion(outputs, labels)
             _, predictions = torch.max(outputs.data, 1)
