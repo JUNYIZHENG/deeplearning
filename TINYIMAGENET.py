@@ -168,6 +168,13 @@ for epoch in range(1, epochs + 1):
         outputs = model(images)
         loss = criterion(outputs, labels)
         loss.backward()
+        if epoch > 6:
+            for group in optimizer.param_groups:
+                for p in group['param']:
+                    state = optimizer.state[p]
+                    if 'step' in state.keys():
+                        if state['step']>=1023:
+                            state['step'] = 1000
         optimizer.step()
 
     correct = 0
