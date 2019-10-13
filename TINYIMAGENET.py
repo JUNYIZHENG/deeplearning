@@ -47,7 +47,7 @@ class ResNet(nn.Module):
         self.layer3 = self.make_layer(block, 128, num_blocks[2], 2)
         self.layer4 = self.make_layer(block, 256, num_blocks[3], 2)
         self.max_pool = nn.MaxPool2d(4,2)
-        self.fc = nn.Linear(256,100)
+        self.fc = nn.Linear(256,200)
 
     def make_layer(self, block, out_channels, num_blocks, stride=1):
         downsample = None
@@ -128,7 +128,7 @@ else:
 val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
 # To check the index for each classes
 # print(val_dataset.class_to_idx)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=8)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100, shuffle=False, num_workers=8)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #
