@@ -196,7 +196,7 @@ for epoch in range(1, epochs + 1):
         loss = criterion(outputs, labels)
         _, predictions = torch.max(outputs.data, 1)
         total += labels.size(0)
-        correct += (predictions == labels).sum().item()
+        correct += (predictions == labels).cpu().sum().item()
     test_accuracy = float(correct / total) * 100
     print('test accuracy : %.2f' % (test_accuracy))
 
