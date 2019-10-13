@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
 import torch.distributed as dist
+import torchvision
 import torchvision.transforms as transforms
 
 import os
