@@ -104,10 +104,15 @@ def create_val_folder(val_dir):
 
 
 # data augmentation
-transform_train = transforms.Compose([transforms.RandomCrop(64, 4), transforms.RandomHorizontalFlip(),
-                                      transforms.ToTensor(),
-                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
-transform_val = transforms.Compose([transforms.ToTensor()])
+transforms_train = transforms.Compose([
+    transforms.RandomCrop(64, padding=4),
+    transforms.RandomHorizontalFlip(),
+    transforms.ToTensor(),
+])
+
+transform_val = transforms.Compose([
+    transforms.ToTensor(),
+])
 
 train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train'
 train_dataset = datasets.ImageFolder(train_dir,
