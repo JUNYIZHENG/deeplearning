@@ -115,16 +115,20 @@ train_dataset = datasets.ImageFolder(train_dir,
 #print(train_dataset.class_to_idx)
 train_loader = torch.utils.data.DataLoader(train_dataset,
         batch_size=100, shuffle=True, num_workers=8)
-val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/images'
-if 'val_' in os.listdir(val_dir)[0]:
+val_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/val/'
+
+
+if 'val_' in os.listdir(val_dir+'images/')[0]:
     create_val_folder(val_dir)
+    val_dir = val_dir+'images/'
 else:
-    pass
-val_dataset = datasets.ImageFolder(val_dir,
-        transform=transforms.ToTensor())
-#print(val_dataset.class_to_idx)
-val_loader = torch.utils.data.DataLoader(val_dataset,
-        batch_size=100, shuffle=False, num_workers=8)
+    val_dir = val_dir+'images/'
+
+
+val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
+# To check the index for each classes
+# print(val_dataset.class_to_idx)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=8)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #
