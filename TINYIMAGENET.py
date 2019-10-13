@@ -3,8 +3,6 @@ import torch.nn as nn
 import torch.utils.data
 import torchvision
 import torchvision.transforms as transforms
-import time
-import pandas as pd
 import torchvision.datasets as datasets
 import os
 from torch.autograd import Variable
