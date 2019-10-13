@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #PBS -l nodes=02:ppn=16:xk
 #PBS -N sync_sgd_cifar100
