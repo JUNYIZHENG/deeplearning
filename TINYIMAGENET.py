@@ -110,13 +110,13 @@ transforms_train = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-transform_val = transforms.Compose([
+transforms_val = transforms.Compose([
     transforms.ToTensor(),
 ])
 
 train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train'
 train_dataset = datasets.ImageFolder(train_dir,
-         transform=transform_train)
+         transform=transforms_train)
 #print(train_dataset.class_to_idx)
 train_loader = torch.utils.data.DataLoader(train_dataset,
         batch_size=100, shuffle=True, num_workers=8)
@@ -130,7 +130,7 @@ else:
     val_dir = val_dir+'images/'
 
 
-val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
+val_dataset = datasets.ImageFolder(val_dir, transform=transforms_val)
 # To check the index for each classes
 # print(val_dataset.class_to_idx)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100, shuffle=False, num_workers=8)
