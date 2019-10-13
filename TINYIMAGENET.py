@@ -134,7 +134,7 @@ val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
 # To check the index for each classes
 # print(val_dataset.class_to_idx)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100, shuffle=False, num_workers=8)
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #
 # train_dir = '/u/training/tra216/scratch/hw4/tiny-imagenet-200/train/'
@@ -153,7 +153,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model = ResNet(BasicBlock,[2,4,4,2]).to(device)
+model = ResNet(BasicBlock,[2,4,4,2]).cuda()
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.001)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
