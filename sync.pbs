@@ -10,4 +10,4 @@ cd /u/training/tra216/scratch/hw4
 . /opt/modules/default/init/bash
 module load bwpy
 module load bwpy-mpi
-aprun -n 2 -N 1 python distributed_training.py
+aprun -n 2 -N 1 python sync.py
