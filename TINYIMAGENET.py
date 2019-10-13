@@ -166,7 +166,7 @@ for epoch in range(1, epochs + 1):
     # for i, dataset in enumerate(train_loader):
     #     images = dataset[0].to(device)
     #     labels = dataset[1].to(device)
-    for i, data in enumerate(train_loader, 0): # Reference: https://zhuanlan.zhihu.com/p/42501145
+    for i, data in enumerate(train_loader, 0):
         images, labels = data
         images, labels = Variable(images).cuda(), Variable(labels).cuda()
         optimizer.zero_grad()
