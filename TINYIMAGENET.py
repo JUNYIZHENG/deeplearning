@@ -185,18 +185,18 @@ for epoch in range(1, epochs + 1):
     correct = 0
     total = 0
     model.eval()
-    with torch.no_grad():
-        # for dataset in val_loader:
-        #     images = dataset[0].to(device)
-        #     labels = dataset[1].to(device)
-        for i, data in enumerate(train_loader, 0): # Reference: https://zhuanlan.zhihu.com/p/42501145
-            images, labels = data
-            images, labels = Variable(images).cuda(), Variable(labels).cuda()
-            outputs = model(images)
-            loss = criterion(outputs, labels)
-            _, predictions = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predictions == labels).sum().item()
+
+    # for dataset in val_loader:
+    #     images = dataset[0].to(device)
+    #     labels = dataset[1].to(device)
+    for i, data in enumerate(train_loader, 0): # Reference: https://zhuanlan.zhihu.com/p/42501145
+        images, labels = data
+        images, labels = Variable(images).cuda(), Variable(labels).cuda()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        _, predictions = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predictions == labels).sum().item()
     test_accuracy = float(correct / total) * 100
     print('test accuracy : %.2f' % (test_accuracy))
 
