@@ -46,8 +46,8 @@ class ResNet(nn.Module):
         self.layer2 = self.make_layer(block, 64, num_blocks[1], 2)
         self.layer3 = self.make_layer(block, 128, num_blocks[2], 2)
         self.layer4 = self.make_layer(block, 256, num_blocks[3], 2)
-        self.max_pool = nn.MaxPool2d(4,2)
-        self.fc = nn.Linear(256,200)
+        self.max_pool = nn.MaxPool2d(2,2)
+        self.fc = nn.Linear(256*4*4,200)
 
     def make_layer(self, block, out_channels, num_blocks, stride=1):
         downsample = None
