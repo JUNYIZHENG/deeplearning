@@ -118,8 +118,6 @@ class ResNet(nn.Module):
         out = self.fc(out)
         return out
 
-
-
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.RandomHorizontalFlip(),
@@ -127,10 +125,17 @@ transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.R
                                       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 transform_test = transforms.Compose([transforms.ToTensor(),
                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
-train_dataset = torchvision.datasets.CIFAR100(root='./data', train=True, transform=transform_train, download=True)
-test_dataset = torchvision.datasets.CIFAR100(root='./data', train=False, download=True, transform=transform_test)
-trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=0)
-testloader = torch.utils.data.DataLoader(test_dataset, batch_size=100, shuffle=False, num_workers=0)
+
+# For trainning data
+trainset = torchvision.datasets.CIFAR100(root=’~/scratch/’,
+        train=True,download=False, transform=transform_train)
+trainloader = torch.utils.data.DataLoader(trainset,
+        batch_size=100, shuffle=True, num_workers=8)
+# For testing data
+testset = torchvision.datasets.CIFAR100(root=’~/scratch/’,
+        train=False,download=False, transform=transform_test)
+testloader = torch.utils.data.DataLoader(testset,
+        batch_size=100, shuffle=False, num_workers=8)
 
 def distribute_training(rank,nodes):
     model = ResNet(BasicBlock,[2,4,4,2]).cuda()
@@ -144,7 +149,7 @@ def distribute_training(rank,nodes):
         print('epoch' + str(epoch))
         model.train()
 
-        for i, dataset in enumerate(trainloader):
+        for i, dataset in enumerate(trainloader,0):
             images, labels = dataset
             images, labels = Variable(images).cuda(), Variable(labels).cuda()
             optimizer.zero_grad()
