@@ -117,7 +117,7 @@ train_dataset = datasets.ImageFolder(train_dir,
 #print(train_dataset.class_to_idx)
 train_loader = torch.utils.data.DataLoader(train_dataset,
         batch_size=100, shuffle=True, num_workers=8)
-val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images'
+val_dir = '/u/training/tra216/scratch/tiny-imagenet-200/val/images/'
 if 'val_' in os.listdir(val_dir)[0]:
     create_val_folder(val_dir)
 else:
