@@ -183,7 +183,7 @@ for epoch in range(1, num_epochs+1):
                             state['step'] = 1000
         optimizer.step()
         prediction = output.data.max(1)[1]
-        accuracy = (float(prediction.eq(labels.data).sum()) / float(batch_size)) * 100.0
+        accuracy = (float(prediction.eq(labels.data).sum()) / float(100)) * 100.0
         counter += 1
         train_accuracy_sum = train_accuracy_sum + accuracy
     train_accuracy_ave = train_accuracy_sum / float(counter)
@@ -198,7 +198,7 @@ for epoch in range(1, num_epochs+1):
         target = Variable(target).cuda()
         output = model(Variable(data).cuda())
         prediction = output.data.max(1)[1]
-        accuracy = (float(prediction.eq(target.data).sum()) / float(batch_size)) * 100.0
+        accuracy = (float(prediction.eq(target.data).sum()) / float(100)) * 100.0
         counter += 1
         test_accuracy_sum = test_accuracy_sum + accuracy
     test_accuracy_ave = test_accuracy_sum / float(counter)
