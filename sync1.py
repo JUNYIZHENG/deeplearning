@@ -157,12 +157,10 @@ for param in model.parameters():
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
 def run(rank, size):
-    torch.manual_seed(1234)
     for epoch in range(50):
         epoch_loss = 0.0
         model.train()
         for i, data in enumerate(trainloader, 0):
-
             inputs, labels = data
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             optimizer.zero_grad()
@@ -170,11 +168,12 @@ def run(rank, size):
             loss = criterion(outputs, labels)
             loss.backward()
             for param in model.parameters():
-            # print(param.grad.data)
-                tensor0 = param.grad.data.cpu()
+#                 tensor0 = param.grad.data.cpu()
+                tensor0 = param.grad.data
                 dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
                 tensor0 /= float(size)
-                param.grad.data = tensor0.cuda()
+#                 param.grad.data = tensor0.cuda()
+                param.grad.data = tensor0
             if (epoch >= 6):
                 for group in optimizer.param_groups:
                     for p in group['params']:
