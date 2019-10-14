@@ -143,13 +143,17 @@ class ResNet(nn.Module):
         return out
 
 
-def average_gradients(model):
-    size = float(dist.get_world_size())
-    for param in model.parameters():
-        dist.all_reduce(param.grad.data, op=dist.reduce_op.SUM)
-        param.grad.data /= size
+# def average_gradients(model):
+#     size = float(dist.get_world_size())
+#     for param in model.parameters():
+#         dist.all_reduce(param.grad.data, op=dist.reduce_op.SUM)
+#         param.grad.data /= size
 
-
+for param in model.parameters():
+    tensor0 = param.data
+    dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
+    param.data = tensor0 / np.sqrt(np.float(num_nodes))
+    
 def run(rank, size):
 
     criterion = nn.CrossEntropyLoss()
@@ -171,7 +175,12 @@ def run(rank, size):
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
-            average_gradients(model)
+            for param in model.parameters():
+            # print(param.grad.data)
+              tensor0 = param.grad.data.cpu()
+              dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
+              tensor0 /= float(num_nodes)
+              param.grad.data = tensor0.cuda()
             if (epoch >= 6):
                 for group in optimizer.param_groups:
                     for p in group['params']:
@@ -191,8 +200,8 @@ def run(rank, size):
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == labels).sum().item()
-            otal += Y_test_batch.size(0)
+            correct += predicted.eq(labels.data).sum()
+            total += Y_test_batch.size(0)
             print('sync_test_accuracy_' + str(correct / total))
 
 run(dist.get_rank(), num_nodes)
