@@ -191,7 +191,7 @@ def run(rank, size):
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == labels.data[0]).sum()
+            correct += (predicted == labels).sum().item()
             otal += Y_test_batch.size(0)
             print('sync_test_accuracy_' + str(correct / total))
 
