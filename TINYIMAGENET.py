@@ -156,7 +156,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = ResNet(BasicBlock,[2,4,4,2]).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.001)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.4)
 
 epochs = 150
 for epoch in range(1, epochs + 1):
