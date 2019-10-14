@@ -8,6 +8,6 @@
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw4
 . /opt/modules/default/init/bash
-module load bwpy
+module load python/2.0.1
 #module load cudatoolkit
 aprun -n 1 -N 1 python TINYIMAGENET.py
