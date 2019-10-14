@@ -148,23 +148,16 @@ class ResNet(nn.Module):
 #     for param in model.parameters():
 #         dist.all_reduce(param.grad.data, op=dist.reduce_op.SUM)
 #         param.grad.data /= size
-
+model = ResNet(BasicBlock, [2, 4, 4, 2]).cuda()
 for param in model.parameters():
     tensor0 = param.data
     dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
     param.data = tensor0 / np.sqrt(np.float(num_nodes))
-    
+criterion = nn.CrossEntropyLoss()  
+optimizer = optim.Adam(model.parameters())
 def run(rank, size):
-
-    criterion = nn.CrossEntropyLoss()
     torch.manual_seed(1234)
-    global trainloader
-    model = ResNet(BasicBlock, [2, 4, 4, 2]).cuda()
-
-    optimizer = optim.Adam(model.parameters())
-
     for epoch in range(50):
-
         epoch_loss = 0.0
         model.train()
         for i, data in enumerate(trainloader, 0):
