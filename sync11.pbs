@@ -2,8 +2,8 @@
 #PBS -l nodes=02:ppn=16:xk
 #PBS -N sync_sgd_cifar100
 #PBS -l walltime=00:40:00
-#PBS -e /u/training/tra216/scratch/hw4/sync1.err
-#PBS -o /u/training/tra216/scratch/hw4/sync1.out
+#PBS -e /u/training/tra216/scratch/hw4/sync11.err
+#PBS -o /u/training/tra216/scratch/hw4/sync11.out
 #PBS -m bea
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw4
