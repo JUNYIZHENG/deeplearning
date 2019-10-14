@@ -144,12 +144,14 @@ def distributed_train(rank,nodes):
         print('epoch' + str(epoch))
         model.train()
 
-        for i, dataset in enumerate(trainloader, 0):
-            images, labels = dataset
-            images, labels = Variable(images).cuda(), Variable(labels).cuda()
+#         for i, dataset in enumerate(trainloader, 0):
+#             images, labels = dataset
+#             images, labels = Variable(images).cuda(), Variable(labels).cuda()
+        for batch_idx, (X_train_batch, Y_train_batch) in enumerate(trainloader):
+            X_train_batch, Y_train_batch = X_train_batch.cuda(), Y_train_batch.cuda()
             optimizer.zero_grad()
-            outputs = model(images)
-            loss = criterion(outputs, labels)
+            outputs = model(X_train_batch)
+            loss = criterion(outputs, Y_train_batch)
             loss.backward()
             all_reduce_grad(model)
             if epoch > 6:
@@ -164,14 +166,16 @@ def distributed_train(rank,nodes):
         correct = 0
         total = 0
         model.eval()
-        for i, dataset in enumerate(testloader, 0):
-            images, labels = dataset
-            images, labels = Variable(images).cuda(), Variable(labels).cuda()
-            outputs = model(images)
+        for batch_idx, (X_test_batch, Y_test_batch) in enumerate(testloader):
+            X_test_batch, Y_test_batch = X_test_batch.cuda(),Y_test_batch.cuda()
+#         for i, dataset in enumerate(testloader, 0):
+#             images, labels = dataset
+#             images, labels = Variable(images).cuda(), Variable(labels).cuda()
+            outputs = model(X_test_batch)
             # loss = criterion(outputs, labels)
             _, predictions = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += predictions.eq(labels).float().sum().item()
+            total += Y_test_batch.size(0)
+            correct += (predictions == Y_test_batch).sum().item()
         test_accuracy = float(correct / total) * 100
         print('test accuracy : %.2f' % (test_accuracy))
 
