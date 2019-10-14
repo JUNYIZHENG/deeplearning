@@ -187,3 +187,5 @@ def distributed_train(rank,nodes):
         print('test accuracy : %.2f' % (test_accuracy))
 
         scheduler.step()
+        
+distributed_train(dist.get_rank(), num_nodes)
