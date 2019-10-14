@@ -175,7 +175,7 @@ for epoch in range(1, epochs + 1):
         loss.backward()
         if epoch > 6:
             for group in optimizer.param_groups:
-                for p in group['param']:
+                for p in group['params']:
                     state = optimizer.state[p]
                     if 'step' in state.keys():
                         if state['step']>=1024:
