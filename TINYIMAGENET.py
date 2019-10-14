@@ -151,9 +151,9 @@ val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100, shuffle=Fa
 # val_dataset = datasets.ImageFolder(val_dir, transform=transforms.ToTensor())
 # val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=100,shuffle=False, num_workers=8)
 
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model = ResNet(BasicBlock,[2,4,4,2]).cuda()
+model = ResNet(BasicBlock,[2,4,4,2]).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.001)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
@@ -189,14 +189,15 @@ for epoch in range(1, epochs + 1):
     # for dataset in val_loader:
     #     images = dataset[0].to(device)
     #     labels = dataset[1].to(device)
-    for j, data in enumerate(val_loader, 0):
-        images, labels = data
-        images, labels = Variable(images).cuda(), Variable(labels).cuda()
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-        _, predictions = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += predictions.eq(labels).float().sum().item()
+    with torch.no_grad():
+        for j, data in enumerate(val_loader, 0):
+            images, labels = data
+            images, labels = Variable(images).cuda(), Variable(labels).cuda()
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            _, predictions = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
     test_accuracy = float(correct / total) * 100
     print('test accuracy : %.2f' % (test_accuracy))
 
