@@ -55,16 +55,7 @@ class BasicBlock(nn.Module):
         self.conv2 = conv3x3(out_channels, out_channels)
         self.bn2 = nn.BatchNorm2d(out_channels)
         self.downsample = downsample
-        # self.layers = nn.Sequential(nn.Conv2d(in_channels,out_channels,kernel_size=3,stride=stride,padding=1,bias=False),
-        #                             nn.BatchNorm2d(num_features=out_channels),
-        #                             nn.ReLU(inplace=True),
-        #                             nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=stride, padding=1),
-        #                             nn.BatchNorm2d(num_features=out_channels))
-        # self.skip_connection = nn.Sequential()
-        # # input channels != output channels, cannot add up F(x) + x
-        # if (stride !=1 or in_channels != out_channels):
-        #     self.skip_connection = nn.Sequential(nn.Conv2d(in_channels,out_channels,padding=1,stride=stride,bias=False),
-        #                                          nn.BatchNorm2d(num_features=out_channels))
+   
 
     def forward(self, x):
         residual = x
