@@ -160,7 +160,6 @@ scheduler = torch.optim.lr_scheduler.StepLR(optimizer,step_size = 10,gamma = 0.5
 for epoch in range(1, num_epochs+1):
     print('epoch' + str(epoch))
     model.train()
-    counter = 0
     for i, data in enumerate(train_loader, 0):
         inputs, labels = data
         labels = Variable(labels).cuda()
@@ -182,26 +181,19 @@ for epoch in range(1, num_epochs+1):
                         if (state['step'] >= 1024):
                             state['step'] = 1000
         optimizer.step()
-        prediction = output.data.max(1)[1]
-        accuracy = (float(prediction.eq(labels.data).sum()) / float(100)) * 100.0
-        counter += 1
-        train_accuracy_sum = train_accuracy_sum + accuracy
-    train_accuracy_ave = train_accuracy_sum / float(counter)
-    print('training acc:{:.4f}'.format(train_accuracy_ave))
 
     model.eval()
-    counter = 0
-    test_accuracy_sum = 0.0
-    correct = 0
+    total = 0
+    test_accuracy = 0.0
 
     for data, target in test_loader:
         target = Variable(target).cuda()
         output = model(Variable(data).cuda())
         prediction = output.data.max(1)[1]
         accuracy = (float(prediction.eq(target.data).sum()) / float(100)) * 100.0
-        counter += 1
-        test_accuracy_sum = test_accuracy_sum + accuracy
-    test_accuracy_ave = test_accuracy_sum / float(counter)
-    print('testing acc:{:.4f}'.format(test_accuracy_ave))
+        total += 1
+        test_accuracy = test_accuracy + accuracy
+    avg_testaccuracy = test_accuracy / float(total)
+    print('testing acc:{:.2f}'.format(avg_testaccuracy))
 
     scheduler.step()
