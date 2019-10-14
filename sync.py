@@ -1,19 +1,22 @@
+import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-import torch.distributed as dist
+import torch.utils.data
 import torchvision
-import torchvision.transforms as transforms
+from torch.autograd import Variable
+from torchvision import transforms
+from PIL import Image
+import torch.distributed as dist
 
 import os
 import subprocess
 from mpi4py import MPI
 
-
 cmd = "/sbin/ifconfig"
 out, err = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE).communicate()
+    stderr=subprocess.PIPE).communicate()
 ip = str(out).split("inet addr:")[1].split()[0]
 
 name = MPI.Get_processor_name()
@@ -24,7 +27,7 @@ num_nodes = int(comm.Get_size())
 ip = comm.gather(ip)
 
 if rank != 0:
-    ip = None
+  ip = None
 
 ip = comm.bcast(ip, root=0)
 
@@ -37,6 +40,8 @@ dist.init_process_group(backend, rank=rank, world_size=num_nodes)
 dtype = torch.FloatTensor
 
 
+#im = Image.open("name.jpg")
+#pix = im.load()
 def conv3x3(in_channels, out_channels, stride=1):
     return nn.Conv2d(in_channels, out_channels, kernel_size=3,
                      stride=stride, padding=1, bias=False)
@@ -118,72 +123,67 @@ class ResNet(nn.Module):
         out = self.fc(out)
         return out
 
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 transform_train = transforms.Compose([transforms.RandomCrop(32, 4), transforms.RandomHorizontalFlip(),
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 transform_test = transforms.Compose([transforms.ToTensor(),
                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
-# For trainning data
-trainset = torchvision.datasets.CIFAR100(root=’/u/training/tra216/scratch/’,
-        train=True,download=False, transform=transform_train)
-trainloader = torch.utils.data.DataLoader(trainset,
-        batch_size=100, shuffle=True, num_workers=8)
+trainset = torchvision.datasets.CIFAR100(root='~/scratch/',train=True,download=False, transform=transform_train)
+trainloader = torch.utils.data.DataLoader(trainset,batch_size=100, shuffle=True, num_workers=8)
 # For testing data
-testset = torchvision.datasets.CIFAR100(root=’/u/training/tra216/scratch/’,
-        train=False,download=False, transform=transform_test)
-testloader = torch.utils.data.DataLoader(testset,
-        batch_size=100, shuffle=False, num_workers=8)
+testset = torchvision.datasets.CIFAR100(root='~/scratch/',train=False,download=False, transform=transform_test)
+testloader = torch.utils.data.DataLoader(testset,batch_size=100, shuffle=False, num_workers=8)
 
-def distribute_training(rank,nodes):
-    model = ResNet(BasicBlock,[2,4,4,2]).cuda()
+#torch.save(model.state_dict(), Path_Save)
+#model.load_state_dict(torch.load(Path_Save))
+def all_reduce_grad(model):
+    for param in model.parameters():
+        tensor0 = param.data
+        dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
+        param.data = tensor0/np.sqrt(np.float(num_nodes))
 
+epochs = 50
+def distributed_train(rank,nodes):
+    model = ResNet(BasicBlock, [2, 4, 4, 2])
+    model.cuda()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=15, gamma=0.1)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
 
-    epochs = 50
     for epoch in range(1, epochs + 1):
         print('epoch' + str(epoch))
         model.train()
 
-        for i, dataset in enumerate(trainloader,0):
+        for i, dataset in enumerate(trainloader, 0):
             images, labels = dataset
             images, labels = Variable(images).cuda(), Variable(labels).cuda()
             optimizer.zero_grad()
             outputs = model(images)
             loss = criterion(outputs, labels)
             loss.backward()
-            # distributed
-            size = float(dist.get_world_size())
-            for param in model.parameters():
-                dist.all_reduce(param.grad.data, op=dist.reduce_op.SUM)
-                param.grad.data /= size
-            if (epoch >= 6):
+            all_reduce_grad(model)
+            if epoch > 6:
                 for group in optimizer.param_groups:
                     for p in group['params']:
                         state = optimizer.state[p]
-                        if 'state' in state.keys():
-                            if (state['step'] >= 1024):
+                        if 'step' in state.keys():
+                            if state['step'] >= 1024:
                                 state['step'] = 1000
             optimizer.step()
 
         correct = 0
         total = 0
         model.eval()
-        for dataset in testloader:
+        for i, dataset in enumerate(testloader, 0):
             images, labels = dataset
             images, labels = Variable(images).cuda(), Variable(labels).cuda()
             outputs = model(images)
-            loss = criterion(outputs, labels)
+            # loss = criterion(outputs, labels)
             _, predictions = torch.max(outputs.data, 1)
             total += labels.size(0)
-            correct += (predictions == labels).cpu().sum().item()
+            correct += predictions.eq(labels).float().sum().item()
         test_accuracy = float(correct / total) * 100
         print('test accuracy : %.2f' % (test_accuracy))
 
         scheduler.step()
-
-distribute_training(dist.get_rank(), num_nodes)
