@@ -148,7 +148,7 @@ def distributed_train(rank,nodes):
 #             images, labels = dataset
 #             images, labels = Variable(images).cuda(), Variable(labels).cuda()
         for batch_idx, (X_train_batch, Y_train_batch) in enumerate(trainloader):
-            X_train_batch, Y_train_batch = X_train_batch.cuda(), Y_train_batch.cuda()
+            X_train_batch, Y_train_batch =  Variable(X_train_batch).cuda(),  Variable(Y_train_batch).cuda()
             optimizer.zero_grad()
             outputs = model(X_train_batch)
             loss = criterion(outputs, Y_train_batch)
@@ -167,7 +167,7 @@ def distributed_train(rank,nodes):
         total = 0
         model.eval()
         for batch_idx, (X_test_batch, Y_test_batch) in enumerate(testloader):
-            X_test_batch, Y_test_batch = X_test_batch.cuda(),Y_test_batch.cuda()
+            X_test_batch, Y_test_batch =  Variable(X_test_batch).cuda(), Variable(Y_test_batch).cuda()
 #         for i, dataset in enumerate(testloader, 0):
 #             images, labels = dataset
 #             images, labels = Variable(images).cuda(), Variable(labels).cuda()
