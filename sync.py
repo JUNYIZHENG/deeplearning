@@ -142,14 +142,13 @@ def all_reduce_grad(model):
         tensor0 = param.data
         dist.all_reduce(tensor0, op=dist.reduce_op.SUM)
         param.data = tensor0/np.sqrt(np.float(num_nodes))
-
+        
+model = ResNet(BasicBlock, [2, 4, 4, 2]).cuda()
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
 epochs = 50
 def distributed_train(rank,nodes):
-    model = ResNet(BasicBlock, [2, 4, 4, 2]).cuda()
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
-
     for epoch in range(1, epochs + 1):
         print('epoch' + str(epoch))
         model.train()
