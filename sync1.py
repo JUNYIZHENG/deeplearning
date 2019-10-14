@@ -168,9 +168,8 @@ def run(rank, size):
             inputs, labels = data
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             optimizer.zero_grad()
-            outputs = model(data)
+            outputs = model(inputs)
             loss = criterion(outputs, labels)
-            epoch_loss += loss.item()
             loss.backward()
             average_gradients(model)
             if (epoch >= 6):
@@ -190,10 +189,10 @@ def run(rank, size):
         for i, data in enumerate(testloader, 0):
             inputs, labels = data
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
-            outputs = resnet(inputs)
+            outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
-            correct += predicted.eq(labels).float().sum().item()
-            total += len(labels)
+            correct += (predicted == labels.data[0]).sum()
+            otal += Y_test_batch.size(0)
             print('sync_test_accuracy_' + str(correct / total))
 
 run(dist.get_rank(), num_nodes)
