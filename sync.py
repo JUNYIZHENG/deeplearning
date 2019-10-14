@@ -145,8 +145,7 @@ def all_reduce_grad(model):
 
 epochs = 50
 def distributed_train(rank,nodes):
-    model = ResNet(BasicBlock, [2, 4, 4, 2])
-    model.cuda()
+    model = ResNet(BasicBlock, [2, 4, 4, 2]).cuda()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
