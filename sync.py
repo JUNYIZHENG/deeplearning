@@ -130,10 +130,10 @@ transform_test = transforms.Compose([transforms.ToTensor(),
                                      transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
 trainset = torchvision.datasets.CIFAR100(root='~/scratch/',train=True,download=False, transform=transform_train)
-trainloader = torch.utils.data.DataLoader(trainset,batch_size=100, shuffle=True, num_workers=8)
+trainloader = torch.utils.data.DataLoader(trainset,batch_size=100, shuffle=True, num_workers=0)
 # For testing data
 testset = torchvision.datasets.CIFAR100(root='~/scratch/',train=False,download=False, transform=transform_test)
-testloader = torch.utils.data.DataLoader(testset,batch_size=100, shuffle=False, num_workers=8)
+testloader = torch.utils.data.DataLoader(testset,batch_size=100, shuffle=False, num_workers=0)
 
 #torch.save(model.state_dict(), Path_Save)
 #model.load_state_dict(torch.load(Path_Save))
