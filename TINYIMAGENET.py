@@ -178,7 +178,7 @@ for epoch in range(1, epochs + 1):
                 for p in group['param']:
                     state = optimizer.state[p]
                     if 'step' in state.keys():
-                        if state['step']>=1023:
+                        if state['step']>=1024:
                             state['step'] = 1000
         optimizer.step()
 
