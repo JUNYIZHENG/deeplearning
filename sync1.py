@@ -120,7 +120,7 @@ class ResNet(nn.Module):
         return out
 
 
-num_epochs = 20
+num_epochs = 14
 
 #read data
 transform_train = transforms.Compose([
