@@ -158,7 +158,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=.001)
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=15, gamma=0.1)
 
-epochs = 25
+epochs = 100
 for epoch in range(1, epochs + 1):
     print('epoch' + str(epoch))
     model.train()
