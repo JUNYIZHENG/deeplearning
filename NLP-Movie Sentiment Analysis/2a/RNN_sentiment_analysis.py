@@ -138,12 +138,26 @@ for epoch in range(no_of_epochs):
 
         I_permutation = np.random.permutation(L_Y_test)
 
+
         for i in range(0, L_Y_test, batch_size):
 
-            x_input = [x_test[j] for j in I_permutation[i:i + batch_size]]
-            y_input = np.asarray(
-                [y_test[j] for j in I_permutation[i:i + batch_size]], dtype=np.int)
+            x_input2 = [x_train[j] for j in I_permutation[i:i + batch_size]]
+            x_input = np.zeros((batch_size, sequence_length), dtype=np.int)
+            for j in range(batch_size):
+                x = np.asarray(x_input2[j])
+                sl = x.shape[0]
+                if (sl < sequence_length):
+                    x_input[j, 0:sl] = x
+                else:
+                    start_index = np.random.randint(sl - sequence_length + 1)
+                    x_input[j, :] = x[start_index:(start_index + sequence_length)]
+            y_input = y_train[I_permutation[i:i + batch_size]]
+            data = Variable(torch.LongTensor(x_input)).cuda()
             target = Variable(torch.FloatTensor(y_input)).cuda()
+
+            # x_input = [x_test[j] for j in I_permutation[i:i + batch_size]]
+            # y_input = np.asarray([y_test[j] for j in I_permutation[i:i + batch_size]], dtype=np.int)
+            # target = Variable(torch.FloatTensor(y_input)).cuda()
 
             with torch.no_grad():
                 loss, pred = model(x_input, target)
