@@ -6,7 +6,7 @@
 #PBS -o /u/training/tra216/scratch/hw5/a1.out
 #PBS -m bea
 #PBS -M junyiz4@illinois.edu
-cd /u/training/tra216/scratch/hw5
+cd /u/training/tra216/scratch/hw5/1a
 . /opt/modules/default/init/bash
 module load python/2.0.1
 #module load cudatoolkit
