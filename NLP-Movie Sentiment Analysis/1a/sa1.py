@@ -43,7 +43,7 @@ for line in lines:
 y_test = np.zeros((25000,))
 y_test[0:12500] = 1
 vocab_size += 1
-model = BOW_model(vocab_size, 3000)
+model = m1(vocab_size, 3000)
 model.cuda()
 
 # opt = 'sgd'
