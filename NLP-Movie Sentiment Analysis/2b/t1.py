@@ -30,7 +30,7 @@ y_test[0:12500] = 1
 
 vocab_size += 1
 
-model = torch.load('rnn.model')
+model = torch.load('rnn1.model')
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
