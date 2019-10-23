@@ -11,11 +11,11 @@ import torch.optim as optim
 
 from RNN_model import RNN_model
 
-glove_embeddings = np.load('preprocessed_data/glove_embeddings.npy')
+glove_embeddings = np.load('../preprocessed_data/glove_embeddings.npy')
 vocab_size = 100000
 
 x_test = []
-with io.open('preprocessed_data/imdb_test_glove88.txt', 'r', encoding='utf-8') as f:
+with io.open('../preprocessed_data/imdb_test_glove88.txt', 'r', encoding='utf-8') as f:
     lines = f.readlines()
 for line in lines:
     line = line.strip()
@@ -34,10 +34,10 @@ model = torch.load('rnn1.model')
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-opt = 'sgd'
-LR = 0.1
-# opt = 'adam'
-# LR = 0.001
+# opt = 'sgd'
+# LR = 0.1
+opt = 'adam'
+LR = 0.001
 if (opt == 'adam'):
     optimizer = optim.Adam(model.parameters(), lr=LR)
 elif (opt == 'sgd'):
