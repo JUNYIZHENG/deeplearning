@@ -67,8 +67,6 @@ no_of_epochs = 10
 L_Y_train = len(y_train)
 L_Y_test = len(y_test)
 
-model.train()
-
 train_loss = []
 train_accu = []
 test_accu = []
