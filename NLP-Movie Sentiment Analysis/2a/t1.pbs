@@ -10,4 +10,4 @@ cd /u/training/tra216/scratch/hw5/2a
 . /opt/modules/default/init/bash
 module load python/2.0.1
 #module load cudatoolkit
-aprun -n 1 -N 1 python t1.py
+aprun -n 1 -N 1 python test1.py
