@@ -11,11 +11,11 @@ import torch.optim as optim
 
 from BOW_model import BOW_model
 
-glove_embeddings = np.load('preprocessed_data/glove_embeddings.npy')
+glove_embeddings = np.load('../preprocessed_data/glove_embeddings.npy')
 vocab_size = 1000000
 
 x_train = []
-with io.open('preprocessed_data/imdb_train_glove.txt', 'r', encoding='utf-8') as f:
+with io.open('../preprocessed_data/imdb_train_glove.txt', 'r', encoding='utf-8') as f:
     lines = f.readlines()
 for line in lines:
     line = line.strip()
@@ -31,7 +31,7 @@ y_train = np.zeros((25000,))
 y_train[0:12500] = 1
 
 x_test = []
-with io.open('preprocessed_data/imdb_test_glove.txt', 'r', encoding='utf-8') as f:
+with io.open('../preprocessed_data/imdb_test_glove.txt', 'r', encoding='utf-8') as f:
     lines = f.readlines()
 for line in lines:
     line = line.strip()
