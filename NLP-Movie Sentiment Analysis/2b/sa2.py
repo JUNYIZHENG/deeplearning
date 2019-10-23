@@ -31,7 +31,7 @@ y_train[0:12500] = 1
 
 vocab_size += 1
 
-model = RNN_model(50)
+model = RNN_model(500)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
@@ -108,7 +108,7 @@ for epoch in range(no_of_epochs):
 
     print(epoch, "%.2f" % (epoch_acc * 100.0), "%.4f" % epoch_loss, "%.4f" % float(time.time() - time1))
 
-torch.save(model, 'rnn1.model')
+torch.save(model, 'rnn2.model')
 data = [train_loss, train_accu]
 data = np.asarray(data)
 np.save('data.npy', data)
