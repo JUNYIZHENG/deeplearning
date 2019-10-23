@@ -11,11 +11,11 @@ import torch.optim as optim
 
 from RNN_model import RNN_model
 
-glove_embeddings = np.load('preprocessed_data/glove_embeddings.npy')
+glove_embeddings = np.load('../preprocessed_data/glove_embeddings.npy')
 vocab_size = 100000
 
 x_train = []
-with io.open('preprocessed_data/imdb_train_glove.txt', 'r', encoding='utf-8') as f:
+with io.open('../preprocessed_data/imdb_train_glove.txt', 'r', encoding='utf-8') as f:
     lines = f.readlines()
 for line in lines:
     line = line.strip()
