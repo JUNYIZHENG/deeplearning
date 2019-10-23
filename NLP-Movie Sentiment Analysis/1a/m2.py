@@ -9,7 +9,7 @@ import torch.distributed as dist
 
 class m2(nn.Module):
     def __init__(self, vocab_size, no_of_hidden_units):
-        super(BOW_model, self).__init__()
+        super(m2, self).__init__()
         ## will need to define model architecture
         self.embedding = nn.Embedding(vocab_size, no_of_hidden_units)
 
