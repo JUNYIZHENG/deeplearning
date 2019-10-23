@@ -126,7 +126,7 @@ for epoch in range(no_of_epochs):
 
 
 
-torch.save(model, 'rnn.model')
+torch.save(model, 'rnn1.model')
 data = [train_loss, train_accu]
 data = np.asarray(data)
-np.save('data.npy', data)
+np.save('data1.npy', data)
