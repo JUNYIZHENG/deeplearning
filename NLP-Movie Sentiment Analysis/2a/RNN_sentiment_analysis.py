@@ -124,7 +124,7 @@ for epoch in range(no_of_epochs):
     print(epoch, "%.2f" % (epoch_acc * 100.0), "%.4f" %
           epoch_loss, "%.4f" % float(time.time() - time1))
 
-    if epoch + 1 % 3 == 0:
+    if ((epoch + 1) % 3) == 0:
         # test
         sequence_length = 200
         model.eval()
