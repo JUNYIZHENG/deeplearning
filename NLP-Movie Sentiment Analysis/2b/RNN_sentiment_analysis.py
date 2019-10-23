@@ -31,7 +31,7 @@ y_train[0:12500] = 1
 
 vocab_size += 1
 
-model = RNN_model(50)
+model = RNN_model(500)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
