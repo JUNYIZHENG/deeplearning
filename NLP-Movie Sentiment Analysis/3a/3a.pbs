@@ -2,11 +2,11 @@
 #PBS -l nodes=1:ppn=16:xk
 #PBS -N 2a
 #PBS -l walltime=08:00:00
-#PBS -e /u/training/tra216/scratch/hw5/3a/3a.err
-#PBS -o /u/training/tra216/scratch/hw5/3a/3a.out
+#PBS -e /u/training/tra216/scratch/hw6/3a.err
+#PBS -o /u/training/tra216/scratch/hw6/3a.out
 #PBS -m bea
 #PBS -M junyiz4@illinois.edu
-cd /u/training/tra216/scratch/hw6/3a
+cd /u/training/tra216/scratch/hw6/
 . /opt/modules/default/init/bash
 module load python/2.0.1
 #module load cudatoolkit
