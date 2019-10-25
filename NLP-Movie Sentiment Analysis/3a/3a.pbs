@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16:xk
 #PBS -N 2a
-#PBS -l walltime=08:00:00
-#PBS -e /u/training/tra216/scratch/hw5/3a.err
-#PBS -o /u/training/tra216/scratch/hw5/3a.out
+#PBS -l walltime=16:00:00
+#PBS -e /u/training/tra216/scratch/hw5/3a/3a.err
+#PBS -o /u/training/tra216/scratch/hw5/3a/3a.out
 #PBS -m bea
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw5/3a
