@@ -38,8 +38,8 @@ token_ids = np.asarray([[word_to_id.get(token,-1)+1 for token in x] for x in tok
 ## preload phrase
 x = Variable(torch.LongTensor(token_ids)).cuda()
 
-# embed = model.embedding(x) 
-embed = model.embedding(x[:,0,:]) # batch_size, time_steps, features
+embed = model.embedding(x) # batch_size, time_steps, features
+# embed = model.embedding(x[:,0,:]) 
 
 state_size = [embed.shape[0],embed.shape[2]] # batch_size, features
 no_of_timesteps = embed.shape[1]
@@ -87,7 +87,7 @@ for j in range(length_of_review):
     ## predict the next word
     embed = model.embedding(x)
 
-    h = model.lstm1(embed)
+    h = model.lstm1(embed[:,0,:])
     h = model.bn_lstm1(h)
     h = model.dropout1(h,dropout=0.3,train=False)
 
