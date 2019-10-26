@@ -47,6 +47,7 @@ vocab_size += 1
 
 # no_of_hidden_units is 500
 model = RNN_model(vocab_size, 500)
+
 language_model = torch.load('language.model')
 # copying all of the weights for the embedding and LSTM layers from the language model
 model.embedding.load_state_dict(language_model.embedding.state_dict())
@@ -81,16 +82,16 @@ no_of_epochs = 20
 L_Y_train = len(y_train)
 L_Y_test = len(y_test)
 
+model.train()
 
 train_loss = []
 train_accu = []
-# test_accu = []
+test_accu = []
 
 
 # training
 for epoch in range(no_of_epochs):
 
-    # training
     model.train()
 
     epoch_acc = 0.0
@@ -140,6 +141,45 @@ for epoch in range(no_of_epochs):
     print(epoch, "%.2f" % (epoch_acc * 100.0), "%.4f" %
           epoch_loss, "%.4f" % float(time.time() - time1))
 
+    if epoch + 1 % 3 == 0:
+        # test
+        sequence_length = 200
+        model.eval()
+
+        epoch_acc = 0.0
+        epoch_loss = 0.0
+
+        epoch_counter = 0
+
+        time1 = time.time()
+
+        I_permutation = np.random.permutation(L_Y_test)
+
+        for i in range(0, L_Y_test, batch_size):
+            x_input = [x_test[j] for j in I_permutation[i:i + batch_size]]
+            y_input = np.asarray(
+                [y_test[j] for j in I_permutation[i:i + batch_size]], dtype=np.int)
+            target = Variable(torch.FloatTensor(y_input)).cuda()
+
+            with torch.no_grad():
+                loss, pred = model(x_input, target)
+
+            prediction = pred >= 0.0
+            truth = target >= 0.5
+            acc = prediction.eq(truth).sum().cpu().data.numpy()
+            epoch_acc += acc
+            epoch_loss += loss.data.item()
+            epoch_counter += batch_size
+
+        epoch_acc /= epoch_counter
+        epoch_loss /= (epoch_counter / batch_size)
+
+        test_accu.append(epoch_acc)
+
+        time2 = time.time()
+        time_elapsed = time2 - time1
+
+        print("  ", "%.2f" % (epoch_acc * 100.0), "%.4f" % epoch_loss)
 
 torch.save(model, 'rnn.model')
 data = [train_loss, train_accu]
