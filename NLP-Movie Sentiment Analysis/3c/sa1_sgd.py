@@ -183,7 +183,7 @@ for epoch in range(no_of_epochs):
 
         print("  ", "%.2f" % (epoch_acc * 100.0), "%.4f" % epoch_loss)
 
-torch.save(model, 'rnn.model')
+torch.save(model, 'rnn1.model')
 data = [train_loss, train_accu]
 data = np.asarray(data)
 np.save('data.npy', data)
