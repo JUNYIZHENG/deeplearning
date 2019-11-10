@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16:xk
 #PBS -N Discriminator_only
-#PBS -l walltime=03:00:00
-#PBS -e /u/training/tra216/scratch/hw7/gan.err
-#PBS -o /u/training/tra216/scratch/hw7/gan.out
+#PBS -l walltime=04:00:00
+#PBS -e /u/training/tra216/scratch/hw7/gan1.err
+#PBS -o /u/training/tra216/scratch/hw7/gan1.out
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw7
 . /opt/modules/default/init/bash
