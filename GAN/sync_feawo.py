@@ -41,7 +41,7 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle
 testloader = enumerate(testloader)
 
 ## Model
-class discriminator(nn.Module):
+class Discriminator(nn.Module):
     def __init__(self):
         super(discriminator, self).__init__()
         self.conv1 = nn.Sequential(
