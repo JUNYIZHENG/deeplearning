@@ -47,42 +47,42 @@ class discriminator(nn.Module):
         self.conv1 = nn.Sequential(
             nn.Conv2d(3, 196, 3, 1, 1),
             nn.LayerNorm([196,32,32]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv2 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 2, 1),
             nn.LayerNorm([196,16,16]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv3 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 1, 1),
             nn.LayerNorm([196,16,16]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv4 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 2, 1),
             nn.LayerNorm([196,8,8]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv5 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 1, 1),
             nn.LayerNorm([196,8,8]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 1, 1),
             nn.LayerNorm([196,8,8]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv7 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 1, 1),
             nn.LayerNorm([196,8,8]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
         self.conv8 = nn.Sequential(
             nn.Conv2d(196, 196, 3, 2, 1),
             nn.LayerNorm([196,4,4]),
-            nn.LeakyReLU(0.1)
+            nn.LeakyReLU(0.02)
         )
 
         self.pool = nn.MaxPool2d(4,4)
