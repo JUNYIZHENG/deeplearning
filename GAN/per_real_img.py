@@ -31,7 +31,8 @@ testset = torchvision.datasets.CIFAR10(root='./', train=False, download=False, t
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=8)
 testloader = enumerate(testloader)
 
-## Modelclass Discriminator(nn.Module):
+## Model
+class Discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()
         self.conv1 = nn.Sequential(
