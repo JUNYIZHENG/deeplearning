@@ -37,7 +37,7 @@ transform_test = transforms.Compose([
             ])
 
 testset = torchvision.datasets.CIFAR10(root='./', train=False, download=False, transform=transform_test)
-testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=8)
+testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False)
 testloader = enumerate(testloader)
 
 ## Model
