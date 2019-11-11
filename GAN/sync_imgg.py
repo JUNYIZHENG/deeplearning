@@ -12,7 +12,7 @@ import os
 from torch import autograd
 from torch.autograd import Variable
 
-class Discriminator(nn.Module):
+class discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()
         self.conv1 = nn.Sequential(
