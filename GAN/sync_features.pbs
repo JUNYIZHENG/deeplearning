@@ -9,4 +9,4 @@ cd /u/training/tra216/scratch/hw7
 . /opt/modules/default/init/bash
 module load bwpy/2.0.0-pre2
 module load cudatoolkit
-aprun -n 1 -N 1 python sync_features.py --extract_features 8
+aprun -n 1 -N 1 python sync_features.py --extract_features 5
