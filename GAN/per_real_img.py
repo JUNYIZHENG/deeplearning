@@ -108,7 +108,7 @@ def myplot(samples):
         plt.imshow(sample)
     return fig
 
-model = torch.load('download/D1.model')
+model = torch.load('cifar10.model')
 model.cuda()
 model.eval()
 
