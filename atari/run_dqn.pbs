@@ -2,8 +2,8 @@
 #PBS -l nodes=1:ppn=4:xk
 #PBS -l walltime=14:00:00
 #PBS -N breakout_dqn
-#PBS -e dqn.err
-#PBS -o dqn.out
+#PBS -e /u/training/tra216/scratch/hw8/dqn.err
+#PBS -o /u/training/tra216/scratch/hw8/dqn.out
 # -m and -M set up mail messages at begin,end,abort:
 # -m bea
 # -M junyiz4@illinois.edu
