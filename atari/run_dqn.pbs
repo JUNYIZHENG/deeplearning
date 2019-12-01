@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=4:xk
+#PBS -l walltime=14:00:00
+#PBS -N breakout_dqn
+#PBS -e dqn.err
+#PBS -o dqn.out
+# -m and -M set up mail messages at begin,end,abort:
+# -m bea
+# -M junyiz4@illinois.edu
+
+#. /opt/modules/default/init/bash
+module load python/2.0.0
+pip install gym[atari]==0.14 --user
+#module load cudatoolkit
+aprun -n 1 -N 1 python Main.py --save_dir breakout_dqn
