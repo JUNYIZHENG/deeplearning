@@ -10,6 +10,5 @@
 cd /u/training/tra216/scratch/hw8
 #. /opt/modules/default/init/bash
 module load python/2.0.0
-pip install gym[atari]==0.14 --user
 #module load cudatoolkit
 aprun -n 1 -N 1 python Draw.py
