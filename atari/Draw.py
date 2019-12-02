@@ -20,7 +20,7 @@ parser.add_argument('--frame_stack', type=int, default=4,
                         as observations')
 parser.add_argument('--save_dir', type=str, default='breakout_imgs/')
 parser.add_argument('--load', type=str,
-                    default='breakout_dqn/breakout_dqn_model.pth')
+                    default='breakout_dqn/1999999.pth')
 
 args = parser.parse_args()
 
