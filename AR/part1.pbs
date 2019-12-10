@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16:xk
 #PBS -N mp9-part1
-#PBS -l walltime=00:30:00
-#PBS -e p1.err
-#PBS -o p1.out
+#PBS -l walltime=10:00:00
+#PBS -e part1.err
+#PBS -o part1.out
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw9
 . /opt/modules/default/init/bash
