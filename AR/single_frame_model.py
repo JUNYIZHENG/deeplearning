@@ -27,7 +27,7 @@ lr = 0.0001
 num_of_epochs = 10
 
 
-data_directory = '/projects/training/bayw/hdf5/'
+data_directory = '/projects/training/bayw/hdf5/UCF-101-hdf5/'
 class_list, train, test = getUCF101(base_directory=data_directory)
 
 model = torchvision.models.resnet50(pretrained=True)
