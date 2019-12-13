@@ -29,7 +29,7 @@ lr = 0.0001
 num_of_epochs = 10
 
 
-data_directory = '/projects/training/bayw/hdf5/UCF-101-hdf5'
+data_directory = '/projects/training/bayw/hdf5/'
 class_list, train, test = getUCF101(base_directory=data_directory)
 
 model = resnet_3d.resnet50(sample_size=IMAGE_SIZE, sample_duration=16)
