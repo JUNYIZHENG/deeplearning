@@ -24,9 +24,9 @@ from multiprocessing import Pool
 
 IMAGE_SIZE = 224
 NUM_CLASSES = 101
-batch_size = 8
+batch_size = 16
 lr = 0.0001
-num_of_epochs = 40
+num_of_epochs = 5
 
 
 data_directory = '/projects/training/bayw/hdf5/'
