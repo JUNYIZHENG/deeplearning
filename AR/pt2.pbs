@@ -2,11 +2,11 @@
 #PBS -l nodes=1:ppn=16:xk
 #PBS -N mp9-part2
 #PBS -l walltime=10:00:00
-#PBS -e part2.err
-#PBS -o part2.out
+#PBS -e pt2.err
+#PBS -o pt2.out
 #PBS -M junyiz4@illinois.edu
 cd /u/training/tra216/scratch/hw9
 . /opt/modules/default/init/bash
 module load bwpy/2.0.0-pre2
 module load cudatoolkit
-aprun -n 1 -N 1 python sequence_model.py
+aprun -n 1 -N 1 python sqm16.py
