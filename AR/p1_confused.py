@@ -47,8 +47,8 @@ lowest_classes = sorted_list[0:10]
 highest_classes = sorted_list[-10:]
 
 
-print('highest performing classes: {}'.format(highest_classes))
-print('lowest performing classes: {}'.format(lowest_classes))
+print('highest classes: {}'.format(highest_classes))
+print('lowest classes: {}'.format(lowest_classes))
 # for most confused classes
 
 confuse_array = np.zeros([3, 10])
