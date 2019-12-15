@@ -215,7 +215,7 @@ mean = np.asarray([0.485, 0.456, 0.406],np.float32)
 std = np.asarray([0.229, 0.224, 0.225],np.float32)
 num_of_frames = 16
 model.eval()
-
+all_prediction = np.zeros((len(test[0]), NUM_CLASSES), dtype=np.float32)
 for i in range(len(test[0])):
 
     t1 = time.time()
@@ -228,27 +228,27 @@ for i in range(len(test[0])):
 
     h = h5py.File(filename,'r')
     nFrames = len(h['video'])
-    frame_index = np.random.randint(nFrames - num_of_frames)
-    video = h['video'][frame_index:(frame_index + num_of_frames)]
+    num_sequence = nFrames // num_of_frames
+    data = np.zeros(
+        (num_sequence, 3, num_of_frames, IMAGE_SIZE, IMAGE_SIZE),
+        dtype=np.float32
+    )
 
-    # data = np.zeros((nFrames,3,IMAGE_SIZE,IMAGE_SIZE),dtype=np.float32)
-    data = []
-
-    for frame in video:
-        frame = cv2.resize(frame, (IMAGE_SIZE, IMAGE_SIZE))
-        frame = frame.astype(np.float32)
-        frame = frame / 255.0
-        frame = (frame - mean) / std
-        data.append(frame)
-    data = np.asarray(data)
-    data = data.transpose(3, 0, 1, 2)
-
+    for j in range(num_sequence):
+        for k in range(j * num_of_frames, (j + 1) * num_of_frames):
+            frame = h['video'][k]
+            frame = frame.astype(np.float32)
+            frame = cv2.resize(frame, (IMAGE_SIZE, IMAGE_SIZE))
+            frame = frame / 255.0
+            frame = (frame - mean) / std
+            frame = frame.transpose(2, 0, 1)
+            data[j, :, k - j * num_of_frames, :, :] = frame
     h.close()
 
-    prediction = np.zeros((num_of_frames, NUM_CLASSES), dtype=np.float32)
+    prediction = np.zeros((num_sequence, NUM_CLASSES), dtype=np.float32)
 
-    loop_i = list(range(0, num_of_frames, len(data)))
-    loop_i.append(num_of_frames)
+    loop_i = list(range(0, num_sequence, 5))
+    loop_i.append(num_sequence)
 
     for j in range(len(loop_i) - 1):
         data_batch = data[loop_i[j]:loop_i[j + 1]]
@@ -290,6 +290,8 @@ for i in range(len(test[0])):
     prediction = np.sum(np.log(prediction), axis=0)
     argsort_pred = np.argsort(-prediction)[0:10]
 
+    all_prediction[index, :] = prediction / num_sequence
+
     label = test[1][index]
     confusion_matrix[label, argsort_pred[0]] += 1
     if label == argsort_pred[0]:
@@ -318,3 +320,4 @@ for i in range(NUM_CLASSES):
     print(sorted_list[i], sorted_results[i], number_of_examples[indices[i]])
 
 np.save('3d_resnet_confusion_matrix.npy', confusion_matrix)
+np.save('3d_prediction_matrix.npy', all_prediction)
