@@ -38,7 +38,8 @@ def combine_model_analysis(pred_path1, pred_path2, class_list, test, num_classes
     acc_top5 = 0.0
     acc_top10 = 0.0
     random_indices = np.random.permutation(len(test[0]))
-    print('random_indices: ',random_indices)
+    print('test[0] length',len(test[0]))
+    print('random_indices: ',random_indices,'length of random_indices: ', len(random_indices))
 
     for i in range(len(test[0])):
         index = random_indices[i]
