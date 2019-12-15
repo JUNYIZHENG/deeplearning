@@ -8,7 +8,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-#from torchvision import datasets, transforms
 from torch.autograd import Variable
 import torch.distributed as dist
 import torchvision
@@ -30,7 +29,6 @@ num_of_epochs = 10
 data_directory = '/projects/training/bayw/hdf5/'
 class_list, train, test = getUCF101(base_directory = data_directory)
 
-###############################
 model = torch.load('3d_resnet.model')
 model.cuda()
 
@@ -51,7 +49,6 @@ mean = np.asarray([0.485, 0.456, 0.406],np.float32)
 std = np.asarray([0.229, 0.224, 0.225],np.float32)
 model.eval()
 
-###############################
 for i in range(len(test[0])):
     # load data from file
     t1 = time.time()
@@ -80,7 +77,6 @@ for i in range(len(test[0])):
         data[j,:,:,:] = frame
     h.close()
 
-    ###################
     num_seq = int(nFrames / 16)
     # get a prediction for each sequence of 16 frames
     prediction = np.zeros((num_seq, NUM_CLASSES),dtype=np.float32)
@@ -119,7 +115,6 @@ for i in range(len(test[0])):
         prediction[count:count_upper, :] = output.cpu().numpy()        
         count = count_upper
         
-    ###################
     filename = filename.replace(data_directory+'UCF-101-hdf5/',prediction_directory)
     if(not os.path.isfile(filename)):
         with h5py.File(filename,'w') as h:
@@ -143,12 +138,11 @@ for i in range(len(test[0])):
 
     print('i:%d/%d nFrames:%d t:%f (%f,%f,%f)' 
           % (i, len(test[0]), nFrames,time.time()-t1,acc_top1/(i+1),acc_top5/(i+1), acc_top10/(i+1)))
-###############################
+
 number_of_examples = np.sum(confusion_matrix,axis=1)
 for i in range(NUM_CLASSES):
     confusion_matrix[i,:] = confusion_matrix[i,:]/np.sum(confusion_matrix[i,:])
 
 acc_save = np.array([acc_top1, acc_top5, acc_top10])
-# save the confusion matrix for later use
-np.save('accuracies.npy', acc_save)
+
 np.save('3d_resnet_matrix.npy',confusion_matrix)
