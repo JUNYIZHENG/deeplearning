@@ -84,4 +84,3 @@ for i in range(10):
 
 print(actual_classes)
 print(confuse_classes)
-print(confuse_class_prob)
