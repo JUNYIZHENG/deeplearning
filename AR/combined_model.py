@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     # Combined model
     combined(
-        'single_frame_prediction_matrix.npy',
+        'single_frame_confusion_matrix',
         '3d_resnet_matrix.npy',
         class_list,
         test,
