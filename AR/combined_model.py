@@ -31,16 +31,18 @@ def combine_model_analysis(pred_path1, pred_path2, class_list, test, num_classes
     prediction2 = np.load(pred_path2)
 
     combined_pred = (prediction1 + prediction2) / 2
+    print('combined_pred: ',combined_pred)
     confusion_matrix = np.zeros((num_classes, num_classes), dtype=np.float32)
 
     acc_top1 = 0.0
     acc_top5 = 0.0
     acc_top10 = 0.0
     random_indices = np.random.permutation(len(test[0]))
+    print('random_indices: ',random_indices)
 
     for i in range(len(test[0])):
         index = random_indices[i]
-
+        print('index: ',index)
         label = test[1][index]
         curt_pred = combined_pred[index]
         argsort_pred = np.argsort(-curt_pred)[0:10]
